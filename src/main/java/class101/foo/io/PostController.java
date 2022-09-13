@@ -30,7 +30,7 @@ public class PostController {
     
     // 2-2 글 목록을 페이징하여 반환
     @GetMapping("/posts")
-    public List<Post> getPostList() {
+    public List<Post> getPostList(@RequestParam(defaultValue = "1") Integer page) {
         return postRepository.findAll(
             PageRequest.of(page - 1, PAGE_SIZE, Sort.by("id").descending())
         );
@@ -43,5 +43,8 @@ public class PostController {
     }
     
     // 4. 글 내용으로 검색 -> 해당 내용이 포함된 모든 글
-
+    @GetMapping("/sesarch")
+    public List<Post> findPostsByContent(@RequestParam String content) {
+        return postRepository.findByContentContains(content);
+    }
 }
