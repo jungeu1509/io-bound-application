@@ -8,6 +8,8 @@ import java.util.List;
 @RestController
 public class PostController {
 
+    private static Integer PAGE_SIZE = 20;
+
     @Autowired
     PostRepository postRepository;
 
@@ -20,7 +22,9 @@ public class PostController {
     // 2-1. 글 목록을 조회한다.
     @GetMapping("/posts")
     public List<Post> getPostList() {
-        return postRepository.findAll();
+        return postRepository.findAll(
+            PageRequest.of(page - 1, PAGE_SIZE, Sort.by("id").descending())
+        );
     }
     
     // 2-2 글 목록을 페이징하여 반환
